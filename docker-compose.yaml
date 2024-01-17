@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  server_ke:
+    image: aplikasi
+    volumes:
+      - ./aplikasi:/aplikasi
+    deploy:
+      replicas: 3
+      # resources:
+      #   # membatasi CPU dan memori
+      #   limits:
+      #        cpus: '0.5'
+      #        memory: 2gb
+  
+  # test:
+  #   build:
+  #     context: iperf3
+  #     dockerfile: Dockerfile
+  #   container_name: "iperf3"
+  #   ports:
+  #     - "8090:80/tcp"
+  #     - "8090:80/udp"
+  #   networks:
+  #     - docker_default
+  #   dns_search: .
+  #   command: iperf3 -s -V -d -p 80
+  
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 80:80
+    # networks:
+    #   default:
+    #     ipv4_address: 172.33.76.2
+    volumes:
+      - ./nginx:/etc/nginx
+    entrypoint: ["nginx", "-g", "daemon off;"]
+  
+  # tester:
+  #   image: alpine
+  #   command: "apk add wrk"
+  #   # stdin_open: true # docker run -i
+  #   # tty: true  # docker run -t
+  #   entrypoint: ["tail", "-f","/dev/null"]
